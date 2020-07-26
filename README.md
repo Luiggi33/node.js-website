@@ -1,2 +1,3 @@
-#node.js-website
-API: https://openweathermap.org
+A node.js Hard coded Weather website
+
+Used API: https://openweathermap.org
