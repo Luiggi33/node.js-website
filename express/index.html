@@ -44,7 +44,7 @@
   </div>
   <script lang="text/javascript">
     function weatherBalloon( cityID ) {
-		var key = 'b8c68fa6fa21a85c8edf580f813db9f2';
+		var key = 'API Key';
 		fetch('https://api.openweathermap.org/data/2.5/weather?id=' + cityID+ '&appid=' + key)  
 		.then(function(resp) { return resp.json() }) // Convert data to json
 		.then(function(data) {
