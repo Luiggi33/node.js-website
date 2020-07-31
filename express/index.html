@@ -1,38 +1,82 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="style.css" />
+  <meta charset="utf-8">
+  <title>Current Weather</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900" rel="stylesheet">
 
-<title>Notepad.exe by Bryant Smith</title>
+	<style>
+		body {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 400;
+		font-size: 1.3em;
+		color: #fff;
+		text-shadow: .1em .1em 0 rgba(0,0,0,0.3);
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-image: linear-gradient(to right top, #99bbcb, #a5c7d7, #b1d4e2, #bde0ee, #c9edfa);
+		}
+		h1 {
+		margin: 0 auto;
+		font-size: 2.2em;
+		text-align: center;
+		color: #fff;
+		font-size: 5em;
+		}
+		body.sunny {
+		background-image: linear-gradient(to right top, #ff4e50, #ff713e, #ff932b, #ffb41d, #f9d423);
+		}
+		body.cloudy {
+			background-image: linear-gradient(to right top, #63747c, #71858e, #7f96a0, #8da8b2, #9bbac5);
+		}
+		body.rainy {
+		background-image: linear-gradient(to right top, #637c7b, #718e8c, #7ea09e, #8db2b0, #9bc5c3);
+		}
+	</style>
 </head>
-
 <body>
-    <div id="page">
-		
-        <div id="titlebar">
+  <div id="weather">
+    <div id="description"></div>
+    <h1 id="temp"></h1>
+    <div id="location"></div>
+  </div>
+  <script lang="text/javascript">
+    function weatherBalloon( cityID ) {
+		var key = 'b8c68fa6fa21a85c8edf580f813db9f2';
+		fetch('https://api.openweathermap.org/data/2.5/weather?id=' + cityID+ '&appid=' + key)  
+		.then(function(resp) { return resp.json() }) // Convert data to json
+		.then(function(data) {
+			console.log(data);
+			drawWeather(data);
+		})
+		.catch(function() {
+			// catch any errors
+		});
+	}
+	
+	function drawWeather( d ) {
+		var celcius = Math.round(parseFloat(d.main.temp)-273.15);
+		var fahrenheit = Math.round(((parseFloat(d.main.temp)-273.15)*1.8)+32); 
+		var description = d.weather[0].description;
+	
+		document.getElementById('description').innerHTML = description;
+		document.getElementById('temp').innerHTML = celcius + '&deg;';
+		document.getElementById('location').innerHTML = d.name;
+	
+		if( description.indexOf('rain') > 0 ) {
+		document.body.className = 'rainy';
+	} else if( description.indexOf('cloud') > 0 ) {
+		document.body.className = 'cloudy';
+	} else {
+		document.body.className = 'sunny';
+	}
+	}
 
-        	<h1>Untitled - Notepad</h1>
-      </div>
-        <div id="bar">
-            <ul>
-                <li><a href="#">Home</a></li>
-            </ul>
-      </div>
-        <div id="main">
-        <h1>Notepad.exe an XHTML 1.1 web template by Bryant Smith</h1>
-        <p>This template was made solely to look like notepad, why would you like a web page like this... well for most businesses I'd say it probably wouldn't work.   But for those of you who are a little quirky and want a webpage that will definitely get a few second looks, this is what you're looking for.</p>
-        
-        <p>It is fully XHTML 1.1 valid (the newest, most stringent to date), the naviagation is fully functional and identical to notepad in both it's rollovers and fonts.   All the fonts are the same.   Also, I designed this template so that you can easily change the logo in the upper right hand corner to something else.   All you have to do is create a 16x16 image, and change the CSS file (directions are in the style.css)</p>
-        
-                <p>Feel free to change the background around as well, this would probably work great with a high-res, wallpaper like background.  And would probably be even more cool if the background has some desktop icons intact.</p>
-        
-        <h1>H1 Tags are the only bold elements</h1>
-        <p>I really really didn't want to use any bold elements, but I figured that since most people want to use page titles I'd make the h1's bold versions of the normal text.   I did this for that reason, plus it will help you out with the search engines too (SEO).</p>
-        
-        </div>
-        <!-- please leave my link somewhere in your page, that is all I ask -->
-        <div id="footer"><a href="http://www.bryantsmith.com">web page designer </a> <a href="http://www.bryantsmith.com">bryant smith</a></div>
-        </div>
+	window.onload = function() {
+		weatherBalloon(2945358);
+	}
+  </script>
 </body>
 </html>
