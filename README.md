@@ -1,3 +1,3 @@
-A node.js Hard coded Weather website
+A node.js Weather Website
 
 Used API: https://openweathermap.org
